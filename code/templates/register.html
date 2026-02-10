@@ -18,6 +18,14 @@
                    required
                    oninvalid="this.setCustomValidity('Password must contain at least 8 characters long')"
                    oninput="this.setCustomValidity('')">
+        </div> <br>
+
+        <div class="d-grid gap-2">
+          <a class="" aria-current="page" href="{{ url_for('login') }}">
+              <button class="btn submit btn-outline-dark" type="button" href="{{ url_for('login') }}">Register</button>
+          </a>
         </div>
+
+
 
 {% endblock %}
