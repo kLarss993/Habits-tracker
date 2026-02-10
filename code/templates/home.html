@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Habits manager</title>
-<!--         <link rel="stylesheet" href="home.css">-->
-    </head>
-    <body>
+{% extends 'base.html' %}
+
+{% block title %}Home page{% endblock %}
+
+{% block content %}
         <div class='row'>
-            <div class='item'><h1><strong><b>Hello {{ user_zname }}!</b></strong></h1></div>
+            <div class='item'><h1><strong><b>Hello {{ username }}!</b></strong></h1></div>
 
             <div>
                 <select class="form-select form-select-lg mb-3" aria-label="Large select example">
@@ -15,5 +12,5 @@
                 </select>
             </div>
         </div>
-    </body>
-</html>
+
+{% endblock %}
