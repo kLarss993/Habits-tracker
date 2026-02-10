@@ -5,6 +5,7 @@
 {% block content %}
         <h1><strong><b>Registration</b></strong></h1>
 
+        <form method="post">
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Username" aria-label="Username" required>
             <span class="input-group-text">@</span>
@@ -25,7 +26,6 @@
               <button class="btn submit btn-outline-dark w-100" type="button" href="{{ url_for('login') }}">Register</button>
           </a>
         </div>
-
-
+        </form>
 
 {% endblock %}
