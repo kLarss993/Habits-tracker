@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Habits manager</title>
-    </head>
-    <body>
+{% extends 'base.html' %}
+
+{% block title %}Home Page{% endblock %}
+{% block content %}
         <div class='container'>
             <div class='item'><h2><strong><b>Hello {{ user }}!</b></strong></h2></div>
 
@@ -17,5 +14,4 @@
             </select>
             </div>
         </div>
-    </body>
-</html>
+{% endblock %}
