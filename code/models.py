@@ -8,7 +8,7 @@ class BaseModel(Model):
         database = db
 
 
-class Company(BaseModel):
+class User(BaseModel):
     name = TextField()
     password = TextField()
 
@@ -17,9 +17,9 @@ class Habits(BaseModel):
     name = TextField()
     type = TextField()
     category = TextField()
-    company = ForeignKeyField(Company, backref='products')
+    user = ForeignKeyField(User, backref='products')
 
 
 def init_db():
     db.connect()
-    db.create_tables([Habits, Company])
+    db.create_tables([Habits, User])
