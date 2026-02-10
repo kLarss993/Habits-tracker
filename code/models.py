@@ -8,8 +8,8 @@ class BaseModel(Model):
         database = db
 
 
-class User(BaseModel):
-    name = TextField()
+class Users(BaseModel):
+    username = TextField()
     password = TextField()
 
 
@@ -17,9 +17,9 @@ class Habits(BaseModel):
     name = TextField()
     type = TextField()
     category = TextField()
-    user = ForeignKeyField(User, backref='products')
+    user = ForeignKeyField(Users, backref='products')
 
 
 def init_db():
     db.connect()
-    db.create_tables([Habits, User])
+    db.create_tables([Habits, Users])
