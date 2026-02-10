@@ -1,4 +1,5 @@
 from flask import *
+import random
 
 app = Flask(__name__)
 app.secret_key = 'artem-kotenko'
