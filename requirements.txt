@@ -1,5 +1,0 @@
-Libraries:
-  Flask
-
-Python version:
-  3.14 or newer
