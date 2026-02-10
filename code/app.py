@@ -1,8 +1,9 @@
+import re
+
 from flask import *
 from werkzeug.security import generate_password_hash
 
 import models
-import re
 from actions_db import *
 
 app = Flask(__name__)
@@ -40,6 +41,8 @@ def register():
         add_user(username, heshed_password)
         flash(f'User "{username}" was successfully registered')
         return redirect(url_for('login'))
+
+    return render_template('register.html')
 
 @app.route('/login')
 def login():
