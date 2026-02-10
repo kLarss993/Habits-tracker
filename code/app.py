@@ -1,11 +1,12 @@
 from flask import *
 
 app = Flask(__name__)
-app.secret_key = 'artem-kotenko'
+app.secret_key = 'maybe_secret_key'
 
 
 @app.route('/')
 def home():
+    flash('fuck u')
     return render_template('home.html')
 
 
