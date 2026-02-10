@@ -1,8 +1,9 @@
 from flask import *
+import models
 
 app = Flask(__name__)
 app.secret_key = 'maybe_secret_key'
-
+models.init_db()
 
 @app.route('/')
 def home():
