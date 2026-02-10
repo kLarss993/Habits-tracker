@@ -10,10 +10,41 @@
 </head>
 <body>
 
-<nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="container">
+
+<nav class="navbar bg-dark navbark-dark">
+    <div class="container justify-content-center">
+        <a class="navbar-brand text-white" href="{{ url_for('home') }}" max-height="100" mx-auto>
+            <strong><b>Habits Tracker</b></strong>
+        </a>
+        <div class="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
+            <div class="bg-dark p-4">
+                <h5 class="text-body-emphasis h4">Collapsed content</h5>
+                <span class="text-body-secondary">Toggleable via the navbar brand.</span>
+            </div>
+        </div>
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </nav>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav d-flex justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('register') }}">Реєстрація</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('login') }}">Увійти</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
+<br> <br>
+
 
 <div class="container">
     {% with messages = get_flashed_messages() %}
