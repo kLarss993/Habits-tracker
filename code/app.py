@@ -6,7 +6,6 @@ app.secret_key = 'maybe_secret_key'
 
 @app.route('/')
 def home():
-    flash('fuck u')
     return render_template('home.html')
 
 
