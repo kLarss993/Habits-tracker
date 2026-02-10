@@ -6,6 +6,9 @@ app.secret_key = 'artem-kotenko'
 
 @app.route('/')
 def home():
+    flash('hi')
+    flash('hello')
+
     return render_template('home.html')
 
 
