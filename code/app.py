@@ -29,16 +29,16 @@ def register():
             return redirect("/register")
 
         if not re.search(r"[A-Za-zА-Яа-яІіЇїЄєҐґ]", password):
-            flash("Password must contain only letters, numbers and dashes")
+            flash("Password must contain at least 1 letter")
             return redirect("/register")
 
         if user_exists(username):
             flash(f'User "{username}" already exists')
             return redirect(url_for('register'))
 
-        heshed_password = generate_password_hash(password)
+        password = generate_password_hash(password)
 
-        add_user(username, heshed_password)
+        add_user(username, password)
         flash(f'User "{username}" was successfully registered')
         return redirect(url_for('login'))
 

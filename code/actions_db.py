@@ -2,6 +2,7 @@ from typing import Any
 
 from models import Habits, Users
 
+
 def get_all_habits(user_id: int):
     return Habits.select().where(Habits.user == user_id)
 
@@ -32,7 +33,7 @@ def habit_update(name: str, type: str, category: str, user_id: int):
     Habits.update(type=type, category=category).where(Habits.name == name, Users.id == user_id).execute()
 
 def add_user(name: str, password: str):
-    Users.create(name=name, password=password)
+    Users.create(username=name, password=password)
 
 def user_exists(name: str) -> bool:
     return Users.select().where(Users.username == name).exists()
