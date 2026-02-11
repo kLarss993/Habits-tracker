@@ -5,23 +5,26 @@
 {% block content %}
         <h1><strong><b>Login</b></strong></h1>
 
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Username" aria-label="Username" required>
-            <span class="input-group-text">@</span>
-            <input name="password"
-                   type="password"
-                   placeholder="Username"
-                   step="0.1"
-                   class="form-control"
-                   minlength="6"
-                   pattern=".*[A-Za-zА-Яа-яІіЇїЄєҐґ].*"
-                   required
-                   oninvalid="this.setCustomValidity('Password must contain at least 8 characters long')"
-                   oninput="this.setCustomValidity('')">
-        </div> <br>
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="input-group mb-3">
+                <span class="input-group-text">@</span>
+                <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username" required>
+                <input name="password"
+                       type="password"
+                       placeholder="Password"
+                       step="0.1"
+                       class="form-control"
+                       minlength="6"
+                       pattern=".*[A-Za-zА-Яа-яІіЇїЄєҐґ].*"
+                       required
+                       oninvalid="this.setCustomValidity('Password must contain at least 8 characters long')"
+                       oninput="this.setCustomValidity('')">
+            </div>
+            <br>
 
-        <div class="d-grid gap-2">
-            <button class="btn submit btn-outline-dark w-100" type="button">Login</button>
-        </div>
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-dark w-100" type="submit">Login</button>
+            </div>
+        </form>
 
 {% endblock %}

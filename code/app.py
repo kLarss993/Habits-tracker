@@ -1,7 +1,7 @@
 import re
 
 from flask import *
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 import models
 from actions_db import *
@@ -12,15 +12,17 @@ models.init_db()
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    username = session.get('username', 'Guest')
+
+    return render_template('home.html', username=username)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username')
+        name = request.form.get('username')
         password = request.form.get('password')
 
-        if not username:
+        if not name:
             flash("Login required")
             return redirect("/register")
 
@@ -32,20 +34,37 @@ def register():
             flash("Password must contain at least 1 letter")
             return redirect("/register")
 
-        if user_exists(username):
-            flash(f'User "{username}" already exists')
+        if user_exists(name):
+            flash(f'User "{name}" already exists')
             return redirect(url_for('register'))
 
         password = generate_password_hash(password)
 
-        add_user(username, password)
-        flash(f'User "{username}" was successfully registered')
+        add_user(name, password)
+        flash(f'User "{name}" was successfully registered')
         return redirect(url_for('login'))
 
     return render_template('register.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        if not user_exists(username):
+            flash(f'User "{username}" not exists!')
+            return redirect(url_for('login'))
+
+        user = get_user_by_name(username)  # Отримуємо об'єкт
+        if not check_password_hash(user.password, password):
+            flash('Password incorrect!')
+            return redirect(url_for('login'))
+
+        session['username'] = user.username
+        flash('You are logged in')
+        return redirect(url_for('home'))
+
     return render_template('login.html')
 
 
