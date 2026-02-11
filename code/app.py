@@ -36,9 +36,9 @@ def register():
             flash(f'User "{username}" already exists')
             return redirect(url_for('register'))
 
-        heshed_password = generate_password_hash(password)
+        password = generate_password_hash(password)
 
-        add_user(username, heshed_password)
+        add_user(username, password)
         flash(f'User "{username}" was successfully registered')
         return redirect(url_for('login'))
 

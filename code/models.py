@@ -22,4 +22,5 @@ class Habits(BaseModel):
 
 def init_db():
     db.connect()
-    db.create_tables([Habits, Users])
+    db.create_tables([Habits])
+    db.create_tables([Users])
