@@ -29,7 +29,7 @@ def register():
             return redirect("/register")
 
         if not re.search(r"[A-Za-zА-Яа-яІіЇїЄєҐґ]", password):
-            flash("Password must contain only letters, numbers and dashes")
+            flash("Password must contain at least 1 letter")
             return redirect("/register")
 
         if user_exists(username):
