@@ -3,13 +3,19 @@
 {% block title %}Home page{% endblock %}
 
 {% block content %}
-        <div class='row'>
-            <div class='item'><h1><strong><b>Hello {{ username }}!</b></strong></h1></div>
+        <div class="container-fluid mt-4">
+            <div class="row align-items-end">
+                <div class="col-auto">
+                    <h1 align="right" class="mb-0"><strong><b>Hi klarss!</b></strong></h1>
+                </div>
 
-            <div>
-                <select class="form-select form-select-lg mb-3" aria-label="Large select example">
-                <option selected>Category</option>
-                </select>
+                <div class="col-auto ms-3">
+                    <h3 for="search" class="form-label d-block mb-1">Search your habits: </h3>
+                    <input type="text" id="search" class="form-control bg-dark text-white" placeholder="Search your habits" style="border-color: #444;">
+                </div> <br> <br>
+
+                <hr class="header-underline"> <br> <br> <br>
+
             </div>
         </div>
 
