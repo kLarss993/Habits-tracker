@@ -32,15 +32,14 @@
                 </button>
             </div>
         </nav>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav d-flex justify-content-center">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('register') }}">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('login') }}">Login</a>
-                </li>
-            </ul>
+        <div>
+            {% if session.get('company_name') %}
+                <a href="{{ url_for('logout')}}" class="btn btn-sm btn btn-light">Logout</a>
+            {% else %}
+                <a href="{{ url_for('register')}}" class="btn btn-sm btn-outline-secondary">Register</a>
+                <a href="{{ url_for('login')}}" class="btn btn-sm btn btn-light">Login</a>
+            {% endif %}
+
         </div>
     </div>
 </nav>
@@ -49,15 +48,16 @@
 
 <div class="container-fluid">
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
-                <div class="d-flex justify-content-center my-2">
-                    <div class="alert alert-success text-center py-1 px-3 fade show" role="alert" style="max-width: 300px; font-size: 0.9rem; border-radius: 10px;">
-                        {{ msg }}
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="d-flex justify-content-center my-2">
+        <div class="alert alert-success text-center py-1 px-3 fade show" role="alert"
+             style="max-width: 300px; font-size: 0.9rem; border-radius: 10px;">
+            {{ msg }}
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
     {% endwith %}
 </div>
 
@@ -65,7 +65,8 @@
     setTimeout(() => {
         document.querySelectorAll('.alert').forEach(a => a.remove());
     }, 3000); // зникає через 5 секунд
-</script> <br> <br>
+</script>
+<br> <br>
 
 {% block content %} {% endblock %}
 </body>
