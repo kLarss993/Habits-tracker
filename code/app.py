@@ -12,7 +12,10 @@ models.init_db()
 
 @app.route('/')
 def home():
-    username = session.get('username', 'Guest')
+    if session:
+        username = session.get('username', 'Guest')
+    else:
+        return redirect(url_for('login'))
 
     return render_template('home.html', username=username)
 
