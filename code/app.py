@@ -18,7 +18,6 @@ def home():
         flash('Please log in')
         return redirect(url_for('login'))
 
-
     return render_template('home.html', username=username)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -74,10 +73,14 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('username')
-    flash('Ви вийшли з системи')
+    if 'username' in session:
+        session.pop('username')
+        return redirect(url_for('login'))
+    else:
+        flash('You are log out')
+        return redirect(url_for('login'))
 
-    return redirect(url_for('login'))
+    # return render_template(username=username)
 
 
 if __name__ == '__main__':
