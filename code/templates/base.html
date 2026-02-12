@@ -19,8 +19,15 @@
         </a>
         <div class="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
             <div class="bg-dark p-4">
-                <h5 class="text-body-emphasis h4">Collapsed content</h5>
-                <span class="text-body-secondary">Toggleable via the navbar brand.</span>
+                <div>
+                    {% if session.get('company_name') %}
+                        <a href="{{ url_for('logout')}}" class="btn btn-sm btn btn-light">Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('register')}}" class="btn btn-sm btn-outline-secondary">Register</a>
+                        <a href="{{ url_for('login')}}" class="btn btn-sm btn btn-light">Login</a>
+                    {% endif %}
+
+                </div>
             </div>
         </div>
         <nav class="navbar navbar-dark bg-dark">
@@ -32,15 +39,6 @@
                 </button>
             </div>
         </nav>
-        <div>
-            {% if session.get('company_name') %}
-                <a href="{{ url_for('logout')}}" class="btn btn-sm btn btn-light">Logout</a>
-            {% else %}
-                <a href="{{ url_for('register')}}" class="btn btn-sm btn-outline-secondary">Register</a>
-                <a href="{{ url_for('login')}}" class="btn btn-sm btn btn-light">Login</a>
-            {% endif %}
-
-        </div>
     </div>
 </nav>
 <br> <br>
