@@ -47,19 +47,25 @@
 <br> <br>
 
 
-<div class="container">
+<div class="container-fluid">
     {% with messages = get_flashed_messages() %}
-    {% if messages %}
-
-    {% for msg in messages %}
-    <div class="alert alert-info" role="alert">
-        {{ msg }}
-    </div>
-    {% endfor %}
-
-    {% endif %}
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="d-flex justify-content-center my-2">
+                    <div class="alert alert-success text-center py-1 px-3 fade show" role="alert" style="max-width: 300px; font-size: 0.9rem; border-radius: 10px;">
+                        {{ msg }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
     {% endwith %}
 </div>
+
+<script>
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(a => a.remove());
+    }, 3000); // зникає через 5 секунд
+</script> <br> <br>
 
 {% block content %} {% endblock %}
 </body>
