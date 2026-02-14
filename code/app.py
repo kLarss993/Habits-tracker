@@ -1,5 +1,5 @@
 import re
-
+from datetime import datetime, timedelta
 from flask import *
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -26,6 +26,13 @@ def home():
         flash('Please log in')
         return redirect(url_for('login'))
 
+    today = datetime.now()
+    dates = []
+    for i in range(6, -1, -1):  # 6 days ago to today (7 days total)
+        date = today - timedelta(days=i)
+        dates.append(date.strftime('%b %d'))
+
+    return render_template('table.html', dates=dates)
 
 
     return render_template('home.html', username=username)
