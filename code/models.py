@@ -15,7 +15,6 @@ class Users(BaseModel):
 
 class Habits(BaseModel):
     name = TextField()
-    type = TextField()
     category = TextField()
     user = ForeignKeyField(Users, backref='products')
 
