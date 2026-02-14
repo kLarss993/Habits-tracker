@@ -3,34 +3,48 @@
 {% block title %}Home page{% endblock %}
 
 {% block content %}
-<form method="POST">
-    <div class="container-fluid mt-4 header-wrapper">
-        <div class="row align-items-end">
-            <div class="col-auto">
-                <h1 align="right" class="mb-0"><strong><b>Hi {{username}}!</b></strong></h1>
-            </div>
 
-            <div class="col-auto ms-3">
-                <h3 for="search" class="form-label d-block mb-1">Search your habits: </h3>
-                <input type="text" id="search" class="form-control bg-dark text-white" placeholder="Search your habits"
-                       style="border-color: #444;">
-            </div>
-            <br> <br>
+    <div class="container container-fluid mt-5">
 
+    <div class="text-center mt-4">
+        <h1><strong>Hi {{ username }}!</strong></h1>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
+
+    <div class="col-auto">
+        <h3 class="mb-0">
+            <strong>Today: {{ now.strftime('%Y/%m/%d') }}</strong>
+        </h3>
+    </div>
+
+    <div class="col-auto">
+        <div class="d-flex align-items-center">
+            <h3 class="mb-0 me-2" style="white-space: nowrap;"><strong>Search your habits:</strong></h3>
+            <input type="text" name="search" class="form-control" placeholder="Type habit's name"
+                   style="border-color: #444; width: 250px;">
         </div>
     </div>
-</form>
 
-    <div class="d-grid gap-2">
-        <a href="{{url_for('add_habit')}}" class="btn btn-outline-dark w-100">Add habit</a>
     </div>
-<table class="table table-striped">
-    <thead>
-        <th>Назва</th>
-        <th>Категорія</th>
 
-    </thead>
+    <br>
 
-</table>
+    <div class="d-grid gap-2 w-100">
+        <a href="{{url_for('add_habit')}}" class="btn btn-outline-dark">Add habit</a>
+    </div>
+
+    <br><br><br>
+
+    <table class="table table-striped w-100 text-center">
+        <thead>
+            <tr>
+                <th>Назва</th>
+                <th>Категорія</th>
+            </tr>
+        </thead>
+    </table>
+
+</div>
 
 {% endblock %}

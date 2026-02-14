@@ -10,6 +10,7 @@ from actions_db import *
 app = Flask(__name__)
 app.secret_key = 'maybe_secret_key'
 models.init_db()
+now = datetime.now()
 
 
 def is_logged():
@@ -33,10 +34,7 @@ def home():
         date = today - timedelta(days=i)
         dates.append(date.strftime('%b %d'))
 
-    return render_template('table.html', dates=dates)
-
-
-    return render_template('home.html', username=username)
+    return render_template('home.html', username=username, now=now)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -108,7 +106,7 @@ def add_habit():
             flash('Habit added')
             return redirect(url_for('home'))
 
-    return render_template('/add_habit.html')
+    return render_template('add_habit.html')
 
 
 @app.route('/logout')
