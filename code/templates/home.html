@@ -3,18 +3,37 @@
 {% block title %}Home page{% endblock %}
 
 {% block content %}
-        <div class="container-fluid mt-4 header-wrapper">
-            <div class="row align-items-end">
-                <div class="col-auto">
-                    <h1 align="right" class="mb-0"><strong><b>Hi klarss!</b></strong></h1>
+
+            <div class="container-fluid mt-4">
+                <div class="row align-items-end justify-content-between">
+
+                    <div class="col-auto">
+                        <h1 class="mb-0"><strong>Hi {{ username }}!</strong></h1>
+                    </div>
+
+                    <div class="col-auto d-flex align-items-center gap-2">
+                        <h3 class="mb-0"><strong>Search your habits:</strong></h3>
+                        <input type="text"
+                               name="search"
+                               class="form-control"
+                               placeholder="type habit's name"
+                               style="border-color: #444; width: 250px;">
+                    </div>
+
                 </div>
-
-                <div class="col-auto ms-3">
-                    <h3 for="search" class="form-label d-block mb-1">Search your habits: </h3>
-                    <input type="text" id="search" class="form-control bg-dark text-white" placeholder="Search your habits" style="border-color: #444;">
-                </div> <br> <br>
-
             </div>
-        </div>
+
+            <div class="container-fluid mt-4">
+                <div class="row align-items-end">
+                    <div class="col-auto">
+                        <h3 class=""><strong><b>Current year: {{ now.year }}</b></strong></h3>
+                    </div>
+
+                    <div class="col-auto ms-3">
+                        <h3 class=""><strong><b>Current month: {{ now.strftime("%B")  }}</b></strong></h3>
+                    </div>
+
+                </div>
+            </div>
 
 {% endblock %}

@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 from flask import *
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -9,6 +10,7 @@ from actions_db import *
 app = Flask(__name__)
 app.secret_key = 'maybe_secret_key'
 models.init_db()
+now = datetime.now()
 
 @app.route('/')
 def home():
@@ -18,7 +20,10 @@ def home():
         flash('Please log in')
         return redirect(url_for('login'))
 
-    return render_template('home.html')
+    return render_template(
+        'home.html',
+        now=now,
+        username=username)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
