@@ -18,6 +18,8 @@ def home():
         flash('Please log in')
         return redirect(url_for('login'))
 
+    return render_template('home.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
