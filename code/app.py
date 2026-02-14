@@ -1,5 +1,5 @@
 import re
-from datetime import datetime, timedelta
+
 from flask import *
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -10,32 +10,15 @@ app = Flask(__name__)
 app.secret_key = 'maybe_secret_key'
 models.init_db()
 
-
-def is_logged():
-    if 'username' in session:
-        return True
-    else:
-        redirect(url_for('login'))
-
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def home():
-    if is_logged():
+    if 'username' in session:
         username = session.get('username', 'Guest')
     else:
         flash('Please log in')
         return redirect(url_for('login'))
 
-    today = datetime.now()
-    dates = []
-    for i in range(6, -1, -1):  # 6 days ago to today (7 days total)
-        date = today - timedelta(days=i)
-        dates.append(date.strftime('%b %d'))
-
-    return render_template('table.html', dates=dates)
-
-
-    return render_template('home.html', username=username)
+    return render_template('home.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -88,28 +71,6 @@ def login():
 
     return render_template('login.html')
 
-@app.route('/add_habit', methods=['GET', 'POST'])
-def add_habit():
-    if is_logged():
-        username = session.get('username')
-        user_id = get_user_id_by_name(username)
-    else:
-        flash('Please log in')
-        return redirect(url_for('login'))
-    if request.method == 'POST':
-        habit_name = request.form.get('new_habit_name')
-        habit_category = request.form.get('new_habit_category')
-        if habit_exists(user_id, habit_name):
-            flash('Habit already exists')
-            return redirect(url_for('home'))
-        else:
-            add_habits(user_id, habit_name, habit_category)
-            flash('Habit added')
-            return redirect(url_for('home'))
-
-    return render_template('/add_habit.html')
-
-
 @app.route('/logout')
 def logout():
     if 'username' in session:
@@ -119,18 +80,18 @@ def logout():
         flash('You are log out')
         return redirect(url_for('login'))
 
-    # return render_template(username=username)
 
 if __name__ == '__main__':
     app.run(debug=True)
 
 
-    # зробить додавання звичок
-    # зробить видалення звичок
+    #зробить видалення звичок
     #зробить редагування звичок
     #зробить табличку для перегляду звичок
     #зробить шоб можна було задавать за скільки днів виконать звичку
-    #показувати поточний рік та місяць за допомогою бібліотеки time
+
+            #показувати поточний рік та місяць за допомогою бібліотеки time
+
     #в табличці має буть 14 кружків, коли користувач пройшов перші 7, мають появитись нові 7
 
 

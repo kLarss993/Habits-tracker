@@ -3,34 +3,18 @@
 {% block title %}Home page{% endblock %}
 
 {% block content %}
-<form method="POST">
-    <div class="container-fluid mt-4 header-wrapper">
-        <div class="row align-items-end">
-            <div class="col-auto">
-                <h1 align="right" class="mb-0"><strong><b>Hi {{username}}!</b></strong></h1>
-            </div>
+        <div class="container-fluid mt-4 header-wrapper">
+            <div class="row align-items-end">
+                <div class="col-auto">
+                    <h1 align="right" class="mb-0"><strong><b>Hi klarss!</b></strong></h1>
+                </div>
 
-            <div class="col-auto ms-3">
-                <h3 for="search" class="form-label d-block mb-1">Search your habits: </h3>
-                <input type="text" id="search" class="form-control bg-dark text-white" placeholder="Search your habits"
-                       style="border-color: #444;">
-            </div>
-            <br> <br>
+                <div class="col-auto ms-3">
+                    <h3 for="search" class="form-label d-block mb-1">Search your habits: </h3>
+                    <input type="text" id="search" class="form-control bg-dark text-white" placeholder="Search your habits" style="border-color: #444;">
+                </div> <br> <br>
 
+            </div>
         </div>
-    </div>
-</form>
-
-    <div class="d-grid gap-2">
-        <a href="{{url_for('add_habit')}}" class="btn btn-outline-dark w-100">Add habit</a>
-    </div>
-<table class="table table-striped">
-    <thead>
-        <th>Назва</th>
-        <th>Категорія</th>
-
-    </thead>
-
-</table>
 
 {% endblock %}
