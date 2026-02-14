@@ -10,6 +10,12 @@ app = Flask(__name__)
 app.secret_key = 'maybe_secret_key'
 models.init_db()
 
+def is_logged():
+    if 'username' in session:
+        return True
+    else:
+        redirect(url_for('login'))
+
 @app.route('/')
 def home():
     if 'username' in session:
@@ -49,6 +55,29 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('register.html')
+
+
+
+@app.route('/add_habit', methods=['GET', 'POST'])
+def add_habit():
+    if is_logged():
+        username = session.get('username')
+        user_id = get_user_id_by_name(username)
+    else:
+        flash('Please log in')
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        habit_name = request.form.get('new_habit_name')
+        habit_category = request.form.get('new_habit_category')
+        if habit_exists(user_id, habit_name):
+            flash('Habit already exists')
+            return redirect(url_for('home'))
+        else:
+            add_habits(user_id, habit_name, habit_category)
+            flash('Habit added')
+            return redirect(url_for('home'))
+
+    return render_template('/add_habit.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
