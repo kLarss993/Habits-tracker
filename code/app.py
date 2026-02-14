@@ -34,7 +34,9 @@ def home():
         date = today - timedelta(days=i)
         dates.append(date.strftime('%b %d'))
 
-    return render_template('home.html', username=username, now=now)
+    habits = get_all_habits(get_user_id_by_name(username))
+
+    return render_template('home.html', username=username, now=now, dates=dates, habits=habits)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
