@@ -18,8 +18,6 @@ def home():
         flash('Please log in')
         return redirect(url_for('login'))
 
-    return render_template('home.html', username=username)
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -80,23 +78,18 @@ def logout():
         flash('You are log out')
         return redirect(url_for('login'))
 
-    # return render_template(username=username)
-
-@app.route('/add_habit', methods=['GET', 'POST'])
-def add_habit():
-    return render_template('/add_habit.html')
-
 
 if __name__ == '__main__':
     app.run(debug=True)
 
 
-    # зробить додавання звичок
-    # зробить видалення звичок
+    #зробить видалення звичок
     #зробить редагування звичок
     #зробить табличку для перегляду звичок
     #зробить шоб можна було задавать за скільки днів виконать звичку
-    #показувати поточний рік та місяць за допомогою бібліотеки time
+
+            #показувати поточний рік та місяць за допомогою бібліотеки time
+
     #в табличці має буть 14 кружків, коли користувач пройшов перші 7, мають появитись нові 7
 
 
