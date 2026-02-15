@@ -47,13 +47,20 @@
         </tr>
         </thead>
         <tbody>
-            {% for habit in habits %}
-                <tr>
-                    <th>{{ habit.name }}</th>
-                    <th>{{ habit.category }}</th>
-                </tr>
-            {% endfor %}
+        {% for habit in habits %}
+        <tr>
+            <th>{{ habit.name }}</th>
+            <th>{{ habit.category }}</th>
+            {% for date in dates %}
+            <th>
+                <form action="completion" method="POST">
+                    <input class="btn btn-primary" type="submit" value="Виконати">
+                </form>
+                {% endfor %}
+            </th>
+        </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div>
-    {% endblock %}
+{% endblock %}

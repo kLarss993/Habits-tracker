@@ -12,6 +12,11 @@ app.secret_key = 'maybe_secret_key'
 models.init_db()
 now = datetime.now()
 
+today = datetime.now()
+dates = []
+for i in range(6, -1, -1):  # 6 days ago to today (7 days total)
+    date = today - timedelta(days=i)
+    dates.append(date.strftime('%b %d'))
 
 def is_logged():
     return 'username' in session
@@ -30,6 +35,7 @@ def current_user():
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    global dates
     if is_logged():
         username = session.get('username', 'Guest')
     else:
@@ -37,6 +43,7 @@ def home():
         return redirect(url_for('login'))
 
     user = current_user()
+    completed = session.get('task_completed', False)
 
     if not user:
         session.pop('username', None)
@@ -55,15 +62,16 @@ def home():
             flash('Товар додано!')
             return redirect(url_for('home'))
 
-    today = datetime.now()
-    dates = []
-    for i in range(6, -1, -1):  # 6 days ago to today (7 days total)
-        date = today - timedelta(days=i)
-        dates.append(date.strftime('%b %d'))
 
-    habits = get_all_habits(user.id)
 
-    return render_template('home.html', username=username, now=now, dates=dates, habits=habits)
+    sorted_habits = get_all_habits(user.id)
+    if request.form.get('search'):
+        search = request.form.get('search')
+        for habit in sorted_habits:
+            if search not in habit['name']:
+                sorted_habits.remove(habit)
+
+    return render_template('home.html', username=username, now=now, dates=dates, habits=sorted_habits, completed=completed)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -148,7 +156,11 @@ def logout():
         flash('You are log out')
         return redirect(url_for('login'))
 
-    # return render_template(username=username)
+# @app.route('/completion/<habit_name>'):
+# if is_logged():
+#     username = session.get('username')
+#
+
 
 if __name__ == '__main__':
     app.run(debug=True)
