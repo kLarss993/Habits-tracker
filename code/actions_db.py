@@ -16,7 +16,7 @@ def get_all_categories(user_id: int):
     return Habits.select(Habits.category).where(Habits.user == user_id).distinct().order_by(Habits.category)
 
 def add_habits(user_id: int, name: str, category: str):
-    Habits.create(user_id=user_id, name=name, category=category)
+    Habits.create(user=user_id, name=name, category=category)
 
 def delete_habit(user_id: int, name: str):
     Habits.delete().where((Habits.name == name) & (Habits.user == user_id)).execute()
@@ -35,7 +35,10 @@ def user_exists(name: str) -> bool:
     return Users.select().where(Users.username == name).exists()
 
 def get_user_by_name(name: str):
-     return Users.get(Users.username == name)
+    try:
+        return Users.get(Users.username == name)
+    except Users.DoesNotExist:
+        return None
 
 def get_user_id_by_name(name: str):
     user = Users.get(Users.username == name)

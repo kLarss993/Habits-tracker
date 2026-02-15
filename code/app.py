@@ -14,10 +14,18 @@ now = datetime.now()
 
 
 def is_logged():
-    if 'username' in session:
-        return True
-    else:
-        redirect(url_for('login'))
+    return 'username' in session
+
+def current_user():
+    if 'username' not in session:
+        return None
+
+    user = get_user_by_name(session['username'])
+    if not user:
+        session.pop('username')
+        return None
+
+    return user
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -28,13 +36,32 @@ def home():
         flash('Please log in')
         return redirect(url_for('login'))
 
+    user = current_user()
+
+    if not user:
+        session.pop('username', None)
+        flash('Please log in again')
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        category = request.form.get('category')
+        user_id = request.form.get('company_id')
+
+        if habit_exists(user.id, name):
+            flash('Такий товар вже є!')
+        else:
+            add_habits(user_id, name, category)
+            flash('Товар додано!')
+            return redirect(url_for('home'))
+
     today = datetime.now()
     dates = []
     for i in range(6, -1, -1):  # 6 days ago to today (7 days total)
         date = today - timedelta(days=i)
         dates.append(date.strftime('%b %d'))
 
-    habits = get_all_habits(get_user_id_by_name(username))
+    habits = get_all_habits(user.id)
 
     return render_template('home.html', username=username, now=now, dates=dates, habits=habits)
 
@@ -74,11 +101,12 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        if not user_exists(username):
+        user = get_user_by_name(username)
+
+        if not user:
             flash(f'User "{username}" not exists!')
             return redirect(url_for('login'))
 
-        user = get_user_by_name(username)  # Отримуємо об'єкт
         if not check_password_hash(user.password, password):
             flash('Password incorrect!')
             return redirect(url_for('login'))
