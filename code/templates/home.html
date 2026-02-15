@@ -48,17 +48,23 @@
         </thead>
         <tbody>
         {% for habit in habits %}
-        <tr>
-            <th>{{ habit.name }}</th>
-            <th>{{ habit.category }}</th>
-            {% for date in dates %}
-            <th>
-                <form action="completion" method="POST">
-                    <input class="btn bg-dark text-white" type="submit" value="Complete">
-                </form>
+            <tr>
+                <th>
+                    <form action="completion" method="POST">
+                        <a href="{{ url_for('delete', name=habit.name) }}" class="btn bg-dark text-white" type="submit">Delete</a>
+                    </form>
+                </th>
+
+                <th><h3><strong>{{ habit.name }}</strong></h3></th>
+                <th><h3><strong>{{ habit.category }}</strong></h3></th>
+                {% for date in dates %}
+                    <th>
+                        <form action="completion" method="POST">
+                            <input class="btn bg-dark text-white" type="submit" value="Complete">
+                        </form>
+                    </th>
                 {% endfor %}
-            </th>
-        </tr>
+            </tr>
         {% endfor %}
         </tbody>
     </table>

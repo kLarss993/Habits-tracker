@@ -162,6 +162,23 @@ def logout():
 #
 
 
+@app.route('/delete/<name>')
+def delete(name):
+    if not is_logged():
+        return redirect(url_for('login'))
+
+    user = current_user()
+
+    if habit_exists(user.id, name):
+        delete_habit(user.id, name)
+        flash(f'Habit {name} was successfully deleted')
+    else:
+        flash('Habit does not exist')
+
+    return redirect('/')
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
