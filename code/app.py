@@ -16,7 +16,7 @@ today = datetime.now()
 dates = []
 for i in range(6, -1, -1):  # 6 days ago to today (7 days total)
     date = today - timedelta(days=i)
-    dates.append(date.strftime('%b %d'))
+    dates.append(date.strftime('%m/%d'))
 
 def is_logged():
     return 'username' in session

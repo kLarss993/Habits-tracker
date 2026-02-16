@@ -3,28 +3,33 @@
 {% block title %}Home page{% endblock %}
 
 {% block content %}
-        <h1><strong><b>Login</b></strong></h1>
 
-        <form method="POST" action="{{ url_for('login') }}">
-            <div class="input-group mb-3">
-                <span class="input-group-text">@</span>
-                <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username" required>
-                <input name="password"
-                       type="password"
-                       placeholder="Password"
-                       step="0.1"
-                       class="form-control"
-                       minlength="8"
-                       pattern=".*[A-Za-zА-Яа-яІіЇїЄєҐґ].*"
-                       required
-                       oninvalid="this.setCustomValidity('Password must contain at least 8 characters long')"
-                       oninput="this.setCustomValidity('')">
-            </div>
-            <br>
+    <div class="container container-fluid mt-5">
 
-            <div class="d-grid gap-2">
-                <button class="btn btn-outline-dark w-100" type="submit">Login</button>
+        <div class="text-center mt-4">
+            <h1><strong>Login</strong></h1>
+        </div>
+
+        <div class="row justify-content-center mt-4">
+            <div class="mt-5"> <form method="POST" action="{{ url_for('login') }}">
+                    <div class="input-group mb-3 w-100">
+                        <span class="input-group-text">@</span>
+                        <input type="text" name="username" class="form-control form-control" placeholder="Username" required>
+                        <input name="password"
+                               type="password"
+                               placeholder="Password"
+                               class="form-control form-control"
+                               minlength="8"
+                               required>
+                    </div>
+
+                    <div class="d-grid gap-2 w-100 mt-4">
+                        <button class="btn btn-outline-dark btn-md" type="submit">Login</button>
+                    </div>
+                </form>
+
             </div>
-        </form>
+        </div>
+    </div>
 
 {% endblock %}
