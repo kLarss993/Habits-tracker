@@ -26,7 +26,7 @@
 
         <div class="mb-4">
             <label class="form-label" style="font-size: 1.1rem;">
-                Category
+                Habit's ategory
             </label>
             <input name="new_habit_category"
                    type="text"
@@ -49,20 +49,14 @@
 
         {% for day in week_days %}
             <div class="form-check form-check-inline">
-                <div>
+                <div style="display: inline;">
                     <input class="form-check-input" type="checkbox" id="{{day}}" name="weekdays" value="{{day}}">
                     <label class="form-check-label">
                         {{day}}
                     </label>
                 </div>
             </div>
-        {% endfor %} <br> <br>
-
-
-<!--        <div class="form-check form-check-inline">-->
-<!--            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">-->
-<!--            <label class="form-check-label" for="inlineCheckbox1">1</label>-->
-<!--        </div>-->
+        {% endfor %} <br> <br> <br>
 
         <div class="row g-3">
             <div class="col-md-6">
