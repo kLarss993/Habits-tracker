@@ -1,25 +1,20 @@
 {% extends 'base.html' %}
 
-{% block title %}Додати звичку{% endblock %}
+{% block title %}Add habit{% endblock %}
 
 {% block content %}
 
-<!-- Заголовок крапля -->
 <div class="drop-module text-center fade-in">
     <div class="emoji">✨</div>
-    <h1>Нова звичка</h1>
-    <p class="subtitle">
-        Створи звичку для щоденного відстеження
-    </p>
+    <h1>Add new habit</h1>
 </div>
 
-<!-- Форма крапля -->
 <div class="drop-module fade-in" style="animation-delay: 0.1s;">
     <form method="POST">
 
         <div class="mb-4">
             <label class="form-label" style="font-size: 1.1rem;">
-                📝 Назва звички
+                Habit's name
             </label>
             <input name="new_habit_name" 
                    type="text" 
@@ -28,51 +23,34 @@
                    placeholder="Наприклад: Пити 2 літри води"
                    required
                    autofocus>
-            <small class="text-muted">
-                Будь конкретним і чітким
-            </small>
         </div>
 
         <div class="mb-4">
             <label class="form-label" style="font-size: 1.1rem;">
-                🏷️ Категорія
+                Category
             </label>
-            <input name="new_habit_category" 
-                   type="text" 
-                   class="form-control" 
+            <input name="new_habit_category"
+                   type="text"
+                   class="form-control"
                    style="padding: 15px;"
                    placeholder="Наприклад: Здоров'я"
                    required>
-            <small class="text-muted">
-                Для організації твоїх звичок
-            </small>
         </div>
 
         <div class="row g-3">
             <div class="col-md-6">
                 <button type="submit" class="btn btn-success w-100" style="padding: 15px;">
-                    ✅ Додати
+                    Add
                 </button>
             </div>
             <div class="col-md-6">
                 <a href="{{ url_for('home') }}" class="btn btn-secondary w-100" style="padding: 15px;">
-                    ← Назад
+                    Back
                 </a>
             </div>
         </div>
 
     </form>
-</div>
-
-<!-- Підказки крапля -->
-<div class="drop-module fade-in" style="animation-delay: 0.2s;">
-    <h2>💡 Корисні поради</h2>
-    <ul>
-        <li>Почни з простих звичок</li>
-        <li>Будь регулярним щодня</li>
-        <li>Відзначай навіть маленькі перемоги</li>
-        <li>Не здавайся після пропусків</li>
-    </ul>
 </div>
 
 {% endblock %}
