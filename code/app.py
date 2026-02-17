@@ -52,20 +52,6 @@ def home():
         flash('Please log in again')
         return redirect(url_for('login'))
 
-    # if request.method == 'POST':
-    #     name = request.form.get('name')
-    #     category = request.form.get('category')
-    #     user_id = request.form.get('company_id')
-    #
-    #     if habit_exists(user.id, name):
-    #         flash('Такий товар вже є!')
-    #     else:
-    #         add_habits(user_id, name, category)
-    #         flash('Товар додано!')
-    #         return redirect(url_for('home'))
-
-
-
     sorted_habits = get_all_habits(user.id)
     if request.form.get('search'):
         search = request.form.get('search')
