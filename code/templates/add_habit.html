@@ -49,9 +49,9 @@
 
         {% for day in week_days %}
             <div class="form-check form-check-inline">
-                <div style="display: inline;">
+                <div >
                     <input class="form-check-input" type="checkbox" id="{{day}}" name="weekdays" value="{{day}}">
-                    <label class="form-check-label">
+                    <label class="form-check-label" for="{{day}}">
                         {{day}}
                     </label>
                 </div>
