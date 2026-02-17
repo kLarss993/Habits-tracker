@@ -16,6 +16,8 @@ class Users(BaseModel):
 class Habits(BaseModel):
     name = TextField()
     category = TextField()
+    days = IntegerField()
+    weekdays = TextField()
     user = ForeignKeyField(Users, backref='products')
 
 

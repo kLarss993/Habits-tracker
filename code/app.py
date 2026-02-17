@@ -50,17 +50,17 @@ def home():
         flash('Please log in again')
         return redirect(url_for('login'))
 
-    if request.method == 'POST':
-        name = request.form.get('name')
-        category = request.form.get('category')
-        user_id = request.form.get('company_id')
-
-        if habit_exists(user.id, name):
-            flash('Такий товар вже є!')
-        else:
-            add_habits(user_id, name, category)
-            flash('Товар додано!')
-            return redirect(url_for('home'))
+    # if request.method == 'POST':
+    #     name = request.form.get('name')
+    #     category = request.form.get('category')
+    #     user_id = request.form.get('company_id')
+    #
+    #     if habit_exists(user.id, name):
+    #         flash('Такий товар вже є!')
+    #     else:
+    #         add_habits(user_id, name, category)
+    #         flash('Товар додано!')
+    #         return redirect(url_for('home'))
 
 
 
@@ -136,15 +136,18 @@ def add_habit():
     if request.method == 'POST':
         habit_name = request.form.get('new_habit_name')
         habit_category = request.form.get('new_habit_category')
+        days = int(request.form.get('days'))
+        weekdays_list = request.form.getlist('weekdays')
+        habit_weekdays = ', '.join(weekdays_list)
         if habit_exists(user_id, habit_name):
             flash('Habit already exists')
             return redirect(url_for('home'))
         else:
-            add_habits(user_id, habit_name, habit_category)
+            add_habits(user_id, habit_name, habit_category, days, habit_weekdays)
             flash('Habit added')
             return redirect(url_for('home'))
-
-    return render_template('add_habit.html')
+    week_days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    return render_template('add_habit.html', week_days=week_days)
 
 
 @app.route('/logout')
