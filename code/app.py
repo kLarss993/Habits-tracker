@@ -12,6 +12,8 @@ app.secret_key = 'maybe_secret_key'
 models.init_db()
 now = datetime.now()
 
+week_days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
 today = datetime.now()
 dates = []
 for i in range(6, -1, -1):  # 6 days ago to today (7 days total)

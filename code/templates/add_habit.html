@@ -20,7 +20,6 @@
                    type="text" 
                    class="form-control" 
                    style="padding: 15px;"
-                   placeholder="Наприклад: Пити 2 літри води"
                    required
                    autofocus>
         </div>
@@ -33,9 +32,37 @@
                    type="text"
                    class="form-control"
                    style="padding: 15px;"
-                   placeholder="Наприклад: Здоров'я"
                    required>
         </div>
+
+        <div class="mb-4">
+            <label class="form-label" style="font-size: 1.1rem;">
+                Days
+            </label>
+            <input name="days"
+                   type="number"
+                   class="form-control"
+                   style="padding: 15px;"
+                   required
+                   autofocus>
+        </div>
+
+        {% for day in week_days %}
+            <div class="form-check form-check-inline">
+                <div>
+                    <input class="form-check-input" type="checkbox" id="{{day}}" name="weekdays" value="{{day}}">
+                    <label class="form-check-label">
+                        {{day}}
+                    </label>
+                </div>
+            </div>
+        {% endfor %}
+
+
+<!--        <div class="form-check form-check-inline">-->
+<!--            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">-->
+<!--            <label class="form-check-label" for="inlineCheckbox1">1</label>-->
+<!--        </div>-->
 
         <div class="row g-3">
             <div class="col-md-6">
