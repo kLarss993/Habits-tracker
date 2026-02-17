@@ -45,9 +45,6 @@
                 <th style="width: 60px;">Action</th>
                 <th style="text-align: left;">Habit</th>
                 <th>Category</th>
-                {% for date in dates %}
-                <th>{{ date }}</th>
-                {% endfor %}
             </tr>
             </thead>
             <tbody>
@@ -70,16 +67,6 @@
                             {{ habit.category }}
                         </span>
                     </td>
-                    
-                    {% for date in dates %}
-                        <td>
-                            <form action="completion" method="POST" style="display: inline;">
-                                <button class="btn btn-success btn-sm" type="submit">
-                                    Done
-                                </button>
-                            </form>
-                        </td>
-                    {% endfor %}
                 </tr>
             {% endfor %}
             </tbody>

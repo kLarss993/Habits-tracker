@@ -161,10 +161,9 @@ def logout():
         flash('You are log out')
         return redirect(url_for('login'))
 
-# @app.route('/completion/<habit_name>'):
-# if is_logged():
-#     username = session.get('username')
-#
+@app.route('/about_habit/<habit>')
+def about_habit(habit):
+    return render_template('about_habit.html', habit=habit)
 
 
 @app.route('/delete/<name>')
@@ -181,7 +180,6 @@ def delete(name):
         flash('Habit does not exist')
 
     return redirect('/')
-
 
 
 if __name__ == '__main__':
