@@ -1,35 +1,64 @@
 {% extends 'base.html' %}
 
-{% block title %}Home page{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block content %}
 
-    <div class="container container-fluid mt-5">
+<div class="auth-card">
+    
+    <div class="emoji">🚀</div>
+    
+    <h1>Register</h1>
+    <p class="subtitle">
+        Create your account
+    </p>
 
-        <div class="text-center mt-4">
-            <h1><strong>Registration</strong></h1>
-        </div>
-
-        <div class="row justify-content-center mt-4">
-            <div class="mt-5"> <form method="POST" action="{{ url_for('register') }}">
-                    <div class="input-group mb-3 w-100">
-                        <span class="input-group-text">@</span>
-                        <input type="text" name="username" class="form-control form-control" placeholder="Username" required>
-                        <input name="password"
-                               type="password"
-                               placeholder="Password"
-                               class="form-control form-control"
-                               minlength="8"
-                               required>
-                    </div>
-
-                    <div class="d-grid gap-2 w-100 mt-4">
-                        <button class="btn btn-outline-dark btn-md" type="submit">Register</button>
-                    </div>
-                </form>
-
+    <form method="POST" action="{{ url_for('register') }}">
+        
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <div class="input-group">
+                <span class="input-group-text">@</span>
+                <input type="text" 
+                       name="username" 
+                       class="form-control" 
+                       placeholder="Choose a username" 
+                       required
+                       autofocus>
             </div>
         </div>
+
+        <div class="mb-4">
+            <label class="form-label">Password</label>
+            <div class="input-group">
+                <span class="input-group-text">🔒</span>
+                <input name="password"
+                       type="password"
+                       placeholder="Create a password"
+                       class="form-control"
+                       minlength="8"
+                       required>
+            </div>
+            <small class="text-muted">
+                Minimum 8 characters with at least one letter
+            </small>
+        </div>
+
+        <button class="btn btn-primary w-100 mb-3" 
+                type="submit" 
+                style="padding: 12px;">
+            Create Account
+        </button>
+        
+    </form>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <p style="color: #666;">
+            Already have an account? 
+            <a href="{{ url_for('login') }}">Login here</a>
+        </p>
     </div>
+
+</div>
 
 {% endblock %}

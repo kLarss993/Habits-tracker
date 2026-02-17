@@ -1,73 +1,108 @@
 {% extends 'base.html' %}
 
-{% block title %}Home page{% endblock %}
+{% block title %}Home{% endblock %}
+
+{% block navbar_date %}
+<div class="date-badge">
+    {{ now.strftime('%Y/%m/%d') }}
+</div>
+{% endblock %}
+
+{% block navbar_search %}
+<form method="POST" style="flex: 1; max-width: 400px;">
+    <div class="search-box">
+        <input type="text" 
+               name="search" 
+               placeholder="Search habit...">
+    </div>
+</form>
+{% endblock %}
 
 {% block content %}
 
-<div class="container container-fluid mt-5">
+<!-- Welcome card -->
+<div class="card text-center">
+    <h1>Hello, {{ username }}!</h1>
+    <p class="subtitle">
+        Track your habits every day
+    </p>
+</div>
 
-    <div class="text-center mt-4">
-        <h1><strong>Hi {{ username }}!</strong></h1>
-    </div>
+<!-- Add habit button card -->
+<div class="card">
+    <a href="{{url_for('add_habit')}}" 
+       class="btn btn-success w-100" 
+       style="padding: 15px; font-size: 1.1rem;">
+        Add New Habit
+    </a>
+</div>
 
-    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
-
-        <div class="col-auto">
-            <h3 class="mb-0">
-                <strong>Today: {{ now.strftime('%Y/%m/%d') }}</strong>
-            </h3>
-        </div>
-
-        <div class="col-auto">
-            <div class="d-flex align-items-center">
-                <h3 class="mb-0 me-2" style="white-space: nowrap;"><strong>Search your habits:</strong></h3>
-                <input type="text" name="search" class="form-control" placeholder="Type habit's name"
-                       style="border-color: #444; width: 250px;">
-            </div>
-        </div>
-
-    </div>
-
-    <br>
-
-    <div class="d-grid gap-2 w-100">
-        <a href="{{url_for('add_habit')}}" class="btn btn-outline-dark">Add habit</a>
-    </div>
-
-    <br><br><br>
-
-    <table class="table table-striped w-100 text-center">
-        <thead>
-        <tr>
-            <th>Action</th>
-            <th>Habit</th>
-            <th>Category</th>
-            {% for date in dates %}
-            <th>{{ date }}</th>
-            {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for habit in habits %}
+<!-- Habits table card -->
+{% if habits %}
+<div class="card">
+    <h2>My Habits</h2>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
             <tr>
-                <th>
-                    <form action="completion" method="POST">
-                        <a href="{{ url_for('delete', name=habit.name) }}" class="btn bg-dark text-white" type="submit">Delete</a>
-                    </form>
-                </th>
-
-                <th><h3><strong>{{ habit.name }}</strong></h3></th>
-                <th><h3><strong>{{ habit.category }}</strong></h3></th>
+                <th style="width: 60px;">Action</th>
+                <th style="text-align: left;">Habit</th>
+                <th>Category</th>
                 {% for date in dates %}
-                    <th>
-                        <form action="completion" method="POST">
-                            <input class="btn bg-dark text-white" type="submit" value="Complete">
-                        </form>
-                    </th>
+                <th>{{ date }}</th>
                 {% endfor %}
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for habit in habits %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('delete', name=habit.name) }}" 
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Delete this habit?')">
+                            Delete
+                        </a>
+                    </td>
+
+                    <td style="text-align: left;">
+                        <strong>{{ habit.name }}</strong>
+                    </td>
+                    
+                    <td>
+                        <span class="category-badge">
+                            {{ habit.category }}
+                        </span>
+                    </td>
+                    
+                    {% for date in dates %}
+                        <td>
+                            <form action="completion" method="POST" style="display: inline;">
+                                <button class="btn btn-success btn-sm" type="submit">
+                                    Done
+                                </button>
+                            </form>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
+{% else %}
+<!-- Empty state card -->
+<div class="card">
+    <div class="empty-state">
+        <div class="emoji">📝</div>
+        <h3>No habits yet</h3>
+        <p>Start tracking your habits today!</p>
+        <a href="{{url_for('add_habit')}}" 
+           class="btn btn-primary mt-3" 
+           style="padding: 12px 30px;">
+            Create First Habit
+        </a>
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}
