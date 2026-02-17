@@ -16,7 +16,7 @@ def get_all_categories(user_id: int):
     return Habits.select(Habits.category).where(Habits.user == user_id).distinct().order_by(Habits.category)
 
 def add_habits(user_id: int, name: str, category: str, days: int, weekdays: str):
-    Habits.create(user=user_id, name=name, category=category)
+    Habits.create(user=user_id, name=name, category=category, days=days, weekdays=weekdays)
 
 def delete_habit(user_id: int, name: str):
     Habits.delete().where((Habits.name == name) & (Habits.user == user_id)).execute()
