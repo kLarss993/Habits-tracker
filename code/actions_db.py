@@ -25,6 +25,12 @@ def get_habit_category(name: str):
     habit = Habits.select().where(Habits.name == name)
     return habit.get().category
 
+def get_habit_by_name(user_id: int, name: str):
+    try:
+        return Habits.get((Habits.name == name) & (Habits.user == user_id))
+    except Habits.DoesNotExist:
+        return None
+
 def habit_update(name: str, category: str, user_id: int):
     Habits.update(category=category).where(Habits.name == name, Users.id == user_id).execute()
 

@@ -13,12 +13,64 @@ models.init_db()
 now = datetime.now()
 
 week_days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+weekday_to_num = {'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3, 'Fri': 4, 'Sat': 5, 'Sun': 6}
 
 today = datetime.now()
 dates = []
 for i in range(6, -1, -1):  # 6 days ago to today (7 days total)
     date = today - timedelta(days=i)
     dates.append(date.strftime('%m/%d'))
+
+def get_habit_calendar_dates(weekdays_str, num_days):
+    """
+    Calculate dates for habit calendar.
+    Based on the example: days=4, weekdays="Mon, Thu" shows 2 dates per weekday.
+    Divides num_days evenly across the weekdays, with remainder distributed to first weekdays.
+    Returns a dictionary: {weekday: [list of dates]}
+    """
+    if not weekdays_str or not weekdays_str.strip():
+        return {}
+    
+    # Parse weekdays string: "Mon, Thu" -> ["Mon", "Thu"]
+    weekday_list = [wd.strip() for wd in weekdays_str.split(',')]
+    weekday_list = [wd for wd in weekday_list if wd in weekday_to_num]
+    
+    if not weekday_list:
+        return {}
+    
+    calendar_data = {}
+    today = datetime.now()
+    
+    # Calculate occurrences per weekday (divide num_days evenly)
+    occurrences_per_weekday = num_days // len(weekday_list)
+    remainder = num_days % len(weekday_list)
+    
+    for idx, weekday_name in enumerate(weekday_list):
+        target_weekday = weekday_to_num[weekday_name]
+        dates = []
+        
+        # Add one extra occurrence for first 'remainder' weekdays
+        occurrences = occurrences_per_weekday + (1 if idx < remainder else 0)
+        
+        # Find the next occurrence of this weekday
+        days_ahead = target_weekday - today.weekday()
+        if days_ahead < 0:
+            days_ahead += 7
+        elif days_ahead == 0:
+            # If today is the target weekday, start from next week
+            days_ahead = 7
+        
+        # Get the first occurrence
+        next_date = today + timedelta(days=days_ahead)
+        
+        # Get N occurrences (one per week)
+        for i in range(occurrences):
+            date = next_date + timedelta(weeks=i)
+            dates.append(date)
+        
+        calendar_data[weekday_name] = dates
+    
+    return calendar_data
 
 def is_logged():
     return 'username' in session
@@ -147,9 +199,29 @@ def logout():
         flash('You are log out')
         return redirect(url_for('login'))
 
-@app.route('/about_habit/<habit>')
-def about_habit(habit):
-    return render_template('about_habit.html', habit=habit)
+@app.route('/about_habit/<habit_name>')
+def about_habit(habit_name):
+    if not is_logged():
+        flash('Please log in')
+        return redirect(url_for('login'))
+    
+    user = current_user()
+    if not user:
+        flash('Please log in again')
+        return redirect(url_for('login'))
+    
+    habit = get_habit_by_name(user.id, habit_name)
+    if not habit:
+        flash('Habit not found')
+        return redirect(url_for('home'))
+    
+    # Ensure weekdays is a string (not a query object)
+    weekdays_str = str(habit.weekdays) if habit.weekdays else ''
+    
+    # Calculate calendar dates
+    calendar_dates = get_habit_calendar_dates(weekdays_str, habit.days)
+    
+    return render_template('about_habit.html', habit=habit, calendar_dates=calendar_dates)
 
 
 @app.route('/delete/<name>')
