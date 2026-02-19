@@ -1,6 +1,6 @@
 from peewee import *
 
-db = SqliteDatabase('db.sqlite', pragmas={'foreign_keys': 1})
+db = SqliteDatabase('db.sqlite', pragmas={'foreign_keys'})
 
 
 class BaseModel(Model):
@@ -21,7 +21,16 @@ class Habits(BaseModel):
     user = ForeignKeyField(Users, backref='products')
 
 
+class HabitCompletion(BaseModel):
+    habit = ForeignKeyField(Habits, backref='completions')
+    date = DateField()
+
+    class Meta:
+        indexes = (
+            (('habit', 'date'), True),
+        )
+
+
 def init_db():
     db.connect()
-    db.create_tables([Habits])
-    db.create_tables([Users])
+    db.create_tables([Users, Habits, HabitCompletion])

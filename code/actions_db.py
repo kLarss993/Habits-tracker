@@ -1,6 +1,6 @@
 from typing import Any
 
-from models import Habits, Users
+from models import Habits, Users, HabitCompletion
 
 
 def get_all_habits(user_id: int):
@@ -25,8 +25,20 @@ def get_habit_category(name: str):
     habit = Habits.select().where(Habits.name == name)
     return habit.get().category
 
+def get_habit_by_name(user_id: int, name: str):
+        return Habits.get((Habits.name == name) & (Habits.user == user_id))
+
+
 def habit_update(name: str, category: str, user_id: int):
     Habits.update(category=category).where(Habits.name == name, Users.id == user_id).execute()
+
+
+def mark_habit_completed(habit_id: int, date):
+    HabitCompletion.get_or_create(habit=habit_id, date=date)
+
+
+def get_habit_completions(habit_id: int):
+    return HabitCompletion.select().where(HabitCompletion.habit == habit_id)
 
 def add_user(name: str, password: str):
     Users.create(username=name, password=password)
@@ -35,40 +47,8 @@ def user_exists(name: str) -> bool:
     return Users.select().where(Users.username == name).exists()
 
 def get_user_by_name(name: str):
-    try:
         return Users.get(Users.username == name)
-    except Users.DoesNotExist:
-        return None
 
 def get_user_id_by_name(name: str):
     user = Users.get(Users.username == name)
     return user.id
-
-# def get_all_products_by_name_az(company_id: int):
-#     return Product.select().where(Product.company == company_id).order_by(Product.name)
-#
-# def get_all_products_by_name_za(company_id: int):
-#     return Product.select().where(Product.company == company_id).order_by(Product.name.desc())
-#
-# def get_all_products_cheapest_first(company_id: int):
-#     return Product.select().where(Product.company == company_id).order_by(Product.price)
-#
-# def get_all_products_expensive_first(company_id: int):
-#     return Product.select().where(Product.company == company_id).order_by(Product.price.desc())
-#
-# def get_products_by_category_(company_id: int, category: str) -> Any:
-#     return Product.select().where((Product.category == category) & (Product.company == company_id))
-#
-# def is_password_valid(password: str) -> bool:
-#         if len(password) >= 6:
-#             have_letter = False
-#             have_number = False
-#             have_special = False
-#             for i in password:
-#                 if i.isalpha():
-#                     have_letter = True
-#                 if i.isdigit():
-#                     have_number = True
-#                 if not i.isalnum():
-#                     have_special = True
-#             if have_letter and have_number and have_special:
