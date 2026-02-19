@@ -3,7 +3,124 @@
 {% block title %}Habit Info{% endblock %}
 
 {% block content %}
-<h1>{{habit.category}}</h1>
+{% extends 'base.html' %}
+
+{% block title %}Habit Info{% endblock %}
+
+{% block content %}
+
+<div class="card text-center">
+    <h1>{{ habit.name }}</h1>
+    <p class="subtitle">Habit Details</p>
+</div>
+
+<div class="card">
+    <div class="mb-4">
+        <h3>Category</h3>
+        <p style="font-size: 1.2rem;">
+            <span class="category-badge">{{ habit.category }}</span>
+        </p>
+    </div>
+
+    <div class="mb-4">
+        <h3>Days remaining</h3>
+        <p style="font-size: 1.2rem;">
+            <strong>{{ days_remaining }}</strong> day{{ 's' if days_remaining != 1 else '' }}
+        </p>
+    </div>
+
+    <div class="mb-4">
+        <h3>Scheduled Days</h3>
+        <p style="font-size: 1.2rem;">
+            {% if habit.weekdays %}
+                {{ habit.weekdays }}
+            {% else %}
+                <span style="color: #999;">Not specified</span>
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="row g-3 mt-4">
+        <div class="col-md-4">
+            <a href="{{ url_for('home') }}" class="btn btn-secondary w-100" style="padding: 15px;">
+                Back to Home
+            </a>
+        </div>
+        <div class="col-md-4">
+            {% if completed_today %}
+                <div class="btn btn-success w-100 disabled" style="padding: 15px;">
+                    You've completed this habit today
+                </div>
+            {% elif can_complete_today %}
+                <form method="POST" action="{{ url_for('complete_today', habit_name=habit.name) }}">
+                    <button type="submit" class="btn btn-primary w-100" style="padding: 15px;">
+                        Complete today
+                    </button>
+                </form>
+            {% else %}
+                <div class="btn btn-outline-secondary w-100 disabled" style="padding: 15px;">
+                    Not scheduled for today
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <a href="{{ url_for('delete', name=habit.name) }}"
+               class="btn btn-danger w-100"
+               style="padding: 15px;"
+               onclick="return confirm('Delete this habit?')">
+                Delete Habit
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if calendar_dates %}
+<div class="card">
+    <h2 class="mb-4">Habit Calendar</h2>
+    <div class="table-responsive">
+        <table class="table" style="text-align: left;">
+            <tbody>
+                {% for weekday, dates in calendar_dates.items() %}
+                <tr>
+                    <td style="font-weight: bold; font-size: 1.2rem; padding: 15px 30px 15px 0; vertical-align: middle; width: 100px;">
+                        {{ weekday }}
+                    </td>
+                    <td style="padding: 15px; vertical-align: middle;">
+                        {% for date in dates %}
+                        {% set date_str = date.isoformat() %}
+                        {% if date_str in completion_dates %}
+                            {# Completed - green #}
+                            <span style="display: inline-block; margin-right: 30px; padding: 10px 15px; background-color: #27ae60; color: white; border-radius: 5px; font-size: 1rem; min-width: 80px; text-align: center;">
+                                {{ date.strftime('%b %d') }}
+                            </span>
+                        {% elif date < today %}
+                            {# Missed - red #}
+                            <span style="display: inline-block; margin-right: 30px; padding: 10px 15px; background-color: #e74c3c; color: white; border-radius: 5px; font-size: 1rem; min-width: 80px; text-align: center;">
+                                {{ date.strftime('%b %d') }}
+                            </span>
+                        {% elif date == today and can_complete_today %}
+                            {# Today, not yet completed but can be - grey #}
+                            <span style="display: inline-block; margin-right: 30px; padding: 10px 15px; background-color: #bdc3c7; border-radius: 5px; font-size: 1rem; min-width: 80px; text-align: center;">
+                                {{ date.strftime('%b %d') }}
+                            </span>
+                        {% else %}
+                            {# Future or not schedulable today - light grey #}
+                            <span style="display: inline-block; margin-right: 30px; padding: 10px 15px; background-color: #e9ecef; border-radius: 5px; font-size: 1rem; min-width: 80px; text-align: center;">
+                                {{ date.strftime('%b %d') }}
+                            </span>
+                        {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
 
 
 

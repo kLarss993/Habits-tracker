@@ -19,7 +19,9 @@ def add_habits(user_id: int, name: str, category: str, days: int, weekdays: str)
     Habits.create(user=user_id, name=name, category=category, days=days, weekdays=weekdays)
 
 def delete_habit(user_id: int, name: str):
-    Habits.delete().where((Habits.name == name) & (Habits.user == user_id)).execute()
+    habit = Habits.get_or_none((Habits.name == name) & (Habits.user == user_id))
+    if not habit:
+        return  HabitCompletion.delete().where(HabitCompletion.habit == habit).execute() & Habits.delete().where(Habits.id == habit.id).execute()
 
 def get_habit_category(name: str):
     habit = Habits.select().where(Habits.name == name)
