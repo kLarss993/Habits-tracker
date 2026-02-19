@@ -18,10 +18,21 @@ def get_all_categories(user_id: int):
 def add_habits(user_id: int, name: str, category: str, days: int, weekdays: str):
     Habits.create(user=user_id, name=name, category=category, days=days, weekdays=weekdays)
 
+# def delete_habit(user_id: int, name: str):
+#     habit = Habits.get_or_none((Habits.name == name) & (Habits.user == user_id))
+#     if not habit:
+#         return  HabitCompletion.delete().where(HabitCompletion.habit == habit).execute() & Habits.delete().where(Habits.id == habit.id).execute()
+
 def delete_habit(user_id: int, name: str):
+    # Шукаємо звичку
     habit = Habits.get_or_none((Habits.name == name) & (Habits.user == user_id))
-    if not habit:
-        return  HabitCompletion.delete().where(HabitCompletion.habit == habit).execute() & Habits.delete().where(Habits.id == habit.id).execute()
+
+    if habit:
+        # 1. Спочатку видаляємо всі відмітки про виконання цієї звички
+        HabitCompletion.delete().where(HabitCompletion.habit == habit.id).execute()
+
+        # 2. Потім видаляємо саму звичку
+        Habits.delete().where(Habits.id == habit.id).execute()
 
 def get_habit_category(name: str):
     habit = Habits.select().where(Habits.name == name)
@@ -49,8 +60,9 @@ def user_exists(name: str) -> bool:
     return Users.select().where(Users.username == name).exists()
 
 def get_user_by_name(name: str):
-        return Users.get(Users.username == name)
+    # Поверне None, якщо користувача немає, замість того щоб "ламати" програму
+    return Users.get_or_none(Users.username == name)
 
 def get_user_id_by_name(name: str):
-    user = Users.get(Users.username == name)
-    return user.id
+    user = Users.get_or_none(Users.username == name)
+    return user.id if user else None

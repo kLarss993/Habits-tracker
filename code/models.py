@@ -33,4 +33,6 @@ class HabitCompletion(BaseModel):
 
 def init_db():
     db.connect()
-    db.create_tables([Users, Habits, HabitCompletion])
+    db.create_tables([Users])
+    db.create_tables([HabitCompletion])
+    db.create_tables([Habits])

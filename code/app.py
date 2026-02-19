@@ -17,7 +17,7 @@ weekday_to_num = {'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3, 'Fri': 4, 'Sat': 5, 'S
 
 today = datetime.now()
 dates = []
-for i in range(6, -1, -1):  # 6 days ago to today (7 days total)
+for i in range(6, -1, -1):
     date = today - timedelta(days=i)
     dates.append(date.strftime('%m/%d'))
 
@@ -253,6 +253,7 @@ def about_habit(habit_name):
         days_remaining=days_remaining,
         completed_today=completed_today,
         can_complete_today=can_complete_today,
+        habit_name=habit_name,
     )
 
 
@@ -282,6 +283,7 @@ def complete_today(habit_name):
 @app.route('/delete/<name>')
 def delete(name):
     if not is_logged():
+        flash('Please log in')
         return redirect(url_for('login'))
 
     user = current_user()
