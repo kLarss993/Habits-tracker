@@ -42,7 +42,6 @@
         <table class="table">
             <thead>
             <tr>
-                <th style="width: 60px;">Action</th>
                 <th style="text-align: left;">Habit</th>
                 <th>Category</th>
             </tr>
@@ -50,16 +49,8 @@
             <tbody>
             {% for habit in habits %}
                 <tr>
-                    <td>
-                        <a href="{{ url_for('delete', name=habit.name) }}"
-                           class="btn btn-danger btn-sm"
-                           onclick="return confirm('Delete this habit?')">
-                            Delete
-                        </a>
-                    </td>
-
                     <td style="text-align: left;">
-                        <a href="{{url_for('about_habit', habit_name=habit_name)}}"><strong>{{ habit.name }}</strong></a>
+                        <a href="{{url_for('about_habit', habit=habit)}}"><strong>{{ habit.name }}</strong></a>
                     </td>
                     
                     <td>

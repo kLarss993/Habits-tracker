@@ -107,14 +107,14 @@ def home():
         flash('Please log in again')
         return redirect(url_for('login'))
 
-    sorted_habits = get_all_habits(user.id)
-    if request.form.get('search'):
-        search = request.form.get('search')
-        for habit in sorted_habits:
-            if search not in habit['name']:
-                sorted_habits.remove(habit)
+    habits = list(get_all_habits(user.id))
 
-    return render_template('home.html', username=username, now=now, dates=dates, habits=sorted_habits,
+    search = request.form.get('search')
+    if search:
+        search_lower = search.lower()
+        habits = [h for h in habits if search_lower in h.name.lower()]
+
+    return render_template('home.html', username=username, now=now, dates=dates, habits=habits,
                            completed=completed)
 
 
@@ -212,7 +212,6 @@ def about_habit(habit_name):
     if not is_logged():
         flash('Please log in')
         return redirect(url_for('login'))
-
     user = current_user()
     if not user:
         flash('Please log in again')
