@@ -1,6 +1,6 @@
 from peewee import *
 
-db = SqliteDatabase('db.sqlite', pragmas={'foreign_keys'})
+db = SqliteDatabase('db.sqlite', pragmas={'foreign_keys': 1})
 
 
 class BaseModel(Model):
