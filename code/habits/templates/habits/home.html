@@ -28,7 +28,7 @@
 </div>
 
 <div class="card">
-    <a href="{{url_for('add_habit')}}" 
+    <a href="{{url_for('habits.add_habit')}}"
        class="btn btn-success w-100" 
        style="padding: 15px; font-size: 1.1rem;">
         Add New Habit
@@ -42,7 +42,6 @@
         <table class="table">
             <thead>
             <tr>
-                <th style="width: 60px;">Action</th>
                 <th style="text-align: left;">Habit</th>
                 <th>Category</th>
             </tr>
@@ -50,16 +49,8 @@
             <tbody>
             {% for habit in habits %}
                 <tr>
-                    <td>
-                        <a href="{{ url_for('delete', name=habit.name) }}"
-                           class="btn btn-danger btn-sm"
-                           onclick="return confirm('Delete this habit?')">
-                            Delete
-                        </a>
-                    </td>
-
                     <td style="text-align: left;">
-                        <a href="{{url_for('about_habit', habit_name=habit_name)}}"><strong>{{ habit.name }}</strong></a>
+                        <a href="{{url_for('habits.about_habit', habit_name=habit.name)}}"><strong>{{ habit.name }}</strong></a>
                     </td>
                     
                     <td>
@@ -79,7 +70,7 @@
         <div class="emoji"></div>
         <h3>No habits yet</h3>
         <p>Start tracking your habits today!</p>
-        <a href="{{url_for('add_habit')}}" 
+        <a href="{{url_for('habits.add_habit')}}"
            class="btn btn-primary mt-3" 
            style="padding: 12px 30px;">
             Create First Habit

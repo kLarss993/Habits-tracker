@@ -3,11 +3,6 @@
 {% block title %}Habit Info{% endblock %}
 
 {% block content %}
-{% extends 'base.html' %}
-
-{% block title %}Habit Info{% endblock %}
-
-{% block content %}
 
 <div class="card text-center">
     <h1>{{ habit.name }}</h1>
@@ -42,7 +37,7 @@
 
     <div class="row g-3 mt-4">
         <div class="col-md-4">
-            <a href="{{ url_for('home') }}" class="btn btn-secondary w-100" style="padding: 15px;">
+            <a href="{{ url_for('habits.home') }}" class="btn btn-secondary w-100" style="padding: 15px;">
                 Back to Home
             </a>
         </div>
@@ -52,7 +47,7 @@
                     You've completed this habit today
                 </div>
             {% elif can_complete_today %}
-                <form method="POST" action="{{ url_for('complete_today', habit_name=habit.name) }}">
+                <form method="POST" action="{{ url_for('habits.complete_today', habit_name=habit.name) }}">
                     <button type="submit" class="btn btn-primary w-100" style="padding: 15px;">
                         Complete today
                     </button>
@@ -64,7 +59,7 @@
             {% endif %}
         </div>
         <div class="col-md-4">
-            <a href="{{ url_for('delete', name=habit.name) }}"
+            <a href="{{ url_for('habits.delete', name=habit) }}"
                class="btn btn-danger w-100"
                style="padding: 15px;"
                onclick="return confirm('Delete this habit?')">
@@ -118,28 +113,5 @@
     </div>
 </div>
 {% endif %}
-
-{% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 {% endblock %}

@@ -17,7 +17,7 @@
         <div class="container-fluid p-0">
             <div class="d-flex align-items-center gap-4 flex-wrap w-100">
                 <!-- Logo -->
-                <a class="navbar-brand" href="{{ url_for('home') }}">
+                <a class="navbar-brand" href="{{ url_for('habits.home') }}">
                     Habits Tracker
                 </a>
                 
@@ -36,10 +36,10 @@
                         <span style="color: #3498db; font-weight: bold;">
                             {{ session.get('username') }}
                         </span>
-                        <a href="{{ url_for('logout')}}" class="btn btn-outline-light btn-sm">Logout</a>
+                        <a href="{{ url_for('auth.logout')}}" class="btn btn-outline-light btn-sm">Logout</a>
                     {% else %}
-                        <a href="{{ url_for('register')}}" class="btn btn-outline-light btn-sm">Register</a>
-                        <a href="{{ url_for('login')}}" class="btn btn-light btn-sm">Login</a>
+                        <a href="{{ url_for('auth.register')}}" class="btn btn-outline-light btn-sm">Register</a>
+                        <a href="{{ url_for('auth.login')}}" class="btn btn-light btn-sm">Login</a>
                     {% endif %}
                 </div>
             </div>

@@ -2,14 +2,12 @@ from datetime import datetime, timedelta
 
 from flask import *
 
-import models
 from actions_db import *
 
 app = Flask(__name__)
 habits_bp = Blueprint('habits', __name__, template_folder='templates')
 now = datetime.now()
-models.init_db()
-app.secret_key = 'maybe_secret_key'
+
 
 week_days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 weekday_to_num = {'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3, 'Fri': 4, 'Sat': 5, 'Sun': 6}
@@ -23,10 +21,11 @@ for i in range(6, -1, -1):
 def is_logged():
     return 'username' in session
 
+
 def current_user():
     if 'username' not in session:
         return None
-    return get_user_by_name(session['username']) # Потрібно повернути об'єкт користувача
+    return get_user_by_name(session['username'])
 
 def get_habit_calendar_dates(weekdays_str, num_days, start_date=None):
     if not weekdays_str or not weekdays_str.strip():
@@ -71,16 +70,17 @@ def home():
         username = session.get('username', 'Guest')
     else:
         flash('Please log in')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
 
     user = current_user()
-    completed = session.get('task_completed', False)
+
 
     if not user:
         session.pop('username', None)
         flash('Please log in again')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
 
+    completed = session.get('task_completed', False)
     sorted_habits = get_all_habits(user.id)
     if request.form.get('search'):
         search = request.form.get('search')
@@ -88,7 +88,7 @@ def home():
             if search not in habit['name']:
                 sorted_habits.remove(habit)
 
-    return render_template('habits/templates/habits/home.html', username=username, now=now, dates=dates, habits=sorted_habits,
+    return render_template('habits/home.html', username=username, now=now, dates=dates, habits=sorted_habits,
                            completed=completed)
 
 @habits_bp.route('/add_habit', methods=['GET', 'POST'])
@@ -98,7 +98,7 @@ def add_habit():
         user_id = get_user_id_by_name(username)
     else:
         flash('Please log in')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     if request.method == 'POST':
         habit_name = request.form.get('new_habit_name')
         habit_category = request.form.get('new_habit_category')
@@ -111,25 +111,25 @@ def add_habit():
         else:
             add_habits(user_id, habit_name, habit_category, days, habit_weekdays)
             flash('Habit added')
-            return redirect(url_for('home'))
+            return redirect(url_for('habits.home'))
     week_days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    return render_template('habits/templates/habits/add_habit.html', week_days=week_days)
+    return render_template('habits/add_habit.html', week_days=week_days)
 
 @habits_bp.route('/about_habit/<habit_name>')
 def about_habit(habit_name):
     if not is_logged():
         flash('Please log in')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
 
     user = current_user()
     if not user:
         flash('Please log in again')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
 
     habit = get_habit_by_name(user.id, habit_name)
     if not habit:
         flash('Habit not found')
-        return redirect(url_for('home'))
+        return redirect(url_for('habits.home'))
 
     # Ensure weekdays is a string (not a query object)
     weekdays_str = str(habit.weekdays) if habit.weekdays else ''
@@ -153,7 +153,7 @@ def about_habit(habit_name):
     calendar_dates = get_habit_calendar_dates(weekdays_str, habit.days, start_date=start_date)
 
     return render_template(
-        'habits/templates/habits/about_habit.html',
+        'habits/about_habit.html',
         habit=habit,
         calendar_dates=calendar_dates,
         completion_dates=[d.isoformat() for d in completion_dates],
@@ -169,29 +169,29 @@ def about_habit(habit_name):
 def complete_today(habit_name):
     if not is_logged():
         flash('Please log in')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
 
     user = current_user()
     if not user:
         flash('Please log in again')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
 
     habit = get_habit_by_name(user.id, habit_name)
     if not habit:
         flash('Habit not found')
-        return redirect(url_for('home'))
+        return redirect(url_for('habits.home'))
 
     today_date = datetime.now().date()
     mark_habit_completed(habit.id, today_date)
     flash("You've completed this habit today")
 
-    return redirect(url_for('about_habit', habit_name=habit.name))
+    return redirect(url_for('habits.about_habit', habit_name=habit.name))
 
 @habits_bp.route('/delete/<name>')
 def delete(name):
     if not is_logged():
         flash('Please log in')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
 
     user = current_user()
 
@@ -201,4 +201,4 @@ def delete(name):
     else:
         flash('Habit does not exist')
 
-    return redirect('/')
+    return redirect(url_for('habits.home'))
