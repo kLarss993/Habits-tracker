@@ -81,11 +81,11 @@ def home():
         return redirect(url_for('auth.login'))
 
     completed = session.get('task_completed', False)
-    sorted_habits = get_all_habits(user.id)
+    sorted_habits = list(get_all_habits(user.id))
     if request.form.get('search'):
         search = request.form.get('search')
         for habit in sorted_habits:
-            if search not in habit['name']:
+            if search not in habit.name:
                 sorted_habits.remove(habit)
 
     return render_template('habits/home.html', username=username, now=now, dates=dates, habits=sorted_habits,
@@ -131,24 +131,17 @@ def about_habit(habit_name):
         flash('Habit not found')
         return redirect(url_for('habits.home'))
 
-    # Ensure weekdays is a string (not a query object)
     weekdays_str = str(habit.weekdays) if habit.weekdays else ''
-
-    # Completions and remaining days
     completions = list(get_habit_completions(habit.id))
     completion_dates = [c.date for c in completions]
     days_completed = len(completion_dates)
     days_remaining = max(habit.days - days_completed, 0)
-
     today_date = datetime.now().date()
     today_weekday_abbr = week_days[today_date.weekday()]
     weekday_list = [wd.strip() for wd in weekdays_str.split(',')] if weekdays_str else []
     is_today_scheduled = today_weekday_abbr in weekday_list
     completed_today = today_date in completion_dates
     can_complete_today = is_today_scheduled and not completed_today and days_remaining > 0
-
-    # Anchor calendar to the earliest completion date if it exists,
-    # otherwise to today. This keeps yesterday's completed slot visible.
     start_date = min(completion_dates) if completion_dates else today_date
     calendar_dates = get_habit_calendar_dates(weekdays_str, habit.days, start_date=start_date)
 
@@ -187,17 +180,15 @@ def complete_today(habit_name):
 
     return redirect(url_for('habits.about_habit', habit_name=habit.name))
 
-@habits_bp.route('/delete/<name>')
-def delete(name):
+@habits_bp.route('/delete/<habit_id>')
+def delete(habit_id):
     if not is_logged():
         flash('Please log in')
         return redirect(url_for('auth.login'))
 
-    user = current_user()
-
-    if habit_exists(user.id, name):
-        delete_habit(user.id, name)
-        flash(f'Habit {name} was successfully deleted')
+    if habit_exists(habit_id):
+        delete_habit(habit_id)
+        flash(f'Habit was successfully deleted')
     else:
         flash('Habit does not exist')
 

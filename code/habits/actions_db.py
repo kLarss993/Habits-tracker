@@ -9,8 +9,8 @@ def get_all_habits(user_id: int):
 def get_habits_by_category(user_id: int, category: str) -> Any:
     return Habits.select().where((Habits.category == category) & (Habits.user == user_id))
 
-def habit_exists(id) -> bool:
-    return Habits.select().where(Habits.id == id).exists()
+def habit_exists(user_id: int, name: str) -> bool:
+    return Habits.select().where((Habits.name == name) & (Habits.user == user_id)).exists()
 
 def get_all_categories(user_id: int):
     return Habits.select(Habits.category).where(Habits.user == user_id).distinct().order_by(Habits.category)
@@ -18,11 +18,11 @@ def get_all_categories(user_id: int):
 def add_habits(user_id: int, name: str, category: str, days: int, weekdays: str):
     Habits.create(user=user_id, name=name, category=category, days=days, weekdays=weekdays)
 
-def delete_habit(id: int):
-    habit = Habits.get_or_none(Habits.id == id)
+def delete_habit(user_id: int, name: str):
+    habit = Habits.get_or_none((Habits.name == name) & (Habits.user == user_id))
     if habit:
-        HabitCompletion.delete().where(HabitCompletion.habit == habit.id).execute()
-        Habits.delete().where(Habits.id == id).execute()
+        HabitCompletion.delete().where(HabitCompletion.habit == habit).execute()
+        Habits.delete().where(Habits.id == habit.id).execute()
 
 def get_habit_category(name: str):
     habit = Habits.select().where(Habits.name == name)

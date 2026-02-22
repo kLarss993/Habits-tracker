@@ -47,7 +47,7 @@
                     You've completed this habit today
                 </div>
             {% elif can_complete_today %}
-                <form method="POST" action="{{ url_for('habits.complete_today', habit_name=habit.name) }}">
+                <form method="POST" action="{{ url_for('habits.complete_today', habit_id=habit.name) }}">
                     <button type="submit" class="btn btn-primary w-100" style="padding: 15px;">
                         Complete today
                     </button>
@@ -59,7 +59,7 @@
             {% endif %}
         </div>
         <div class="col-md-4">
-            <a href="{{ url_for('habits.delete', name=habit) }}"
+            <a href="{{ url_for('habits.delete', habit_id=habit.id) }}"
                class="btn btn-danger w-100"
                style="padding: 15px;"
                onclick="return confirm('Delete this habit?')">
