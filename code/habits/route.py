@@ -2,13 +2,13 @@ from datetime import datetime, timedelta
 
 from flask import *
 
-import models
+from models import *
 from actions_db import *
 
 app = Flask(__name__)
 habits_bp = Blueprint('habits', __name__, template_folder='templates')
 now = datetime.now()
-models.init_db()
+init_db()
 app.secret_key = 'maybe_secret_key'
 
 week_days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']

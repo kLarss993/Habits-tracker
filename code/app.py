@@ -1,4 +1,5 @@
 from flask import *
+
 from habits.route import habits_bp
 
 from auth.route import auth_bp
